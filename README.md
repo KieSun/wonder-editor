@@ -1,2 +1,15 @@
-# wx-md-editor
-微信公众号编辑器
+# umi project
+
+## Getting Started
+
+Install dependencies,
+
+```bash
+$ yarn
+```
+
+Start the dev server,
+
+```bash
+$ yarn start
+```
