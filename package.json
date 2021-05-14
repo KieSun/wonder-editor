@@ -21,7 +21,9 @@
   },
   "dependencies": {
     "@ant-design/pro-layout": "^6.5.0",
+    "@bytemd/react": "^1.9.2",
     "@umijs/preset-react": "1.x",
+    "rsuite": "^4.10.1",
     "umi": "^3.4.19"
   },
   "devDependencies": {
