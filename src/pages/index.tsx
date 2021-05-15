@@ -1,9 +1,17 @@
-import styles from './index.less';
+import Editor from '@/components/editor';
+import Header from '@/components/header';
+import Preview from '@/components/preview';
+import 'bytemd/dist/index.min.css';
+import { StyledWrapper, StyledMainWrapper } from './styles';
 
 export default function IndexPage() {
   return (
-    <div>
-      <h1 className={styles.title}>Page index</h1>
-    </div>
+    <StyledWrapper>
+      <Header />
+      <StyledMainWrapper>
+        <Editor />
+        <Preview />
+      </StyledMainWrapper>
+    </StyledWrapper>
   );
 }
