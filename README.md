@@ -1,15 +1,13 @@
-# umi project
+# Editor
 
-## Getting Started
+## Feature
 
-Install dependencies,
-
-```bash
-$ yarn
-```
-
-Start the dev server,
-
-```bash
-$ yarn start
-```
+- [] 预览，微信 render
+- [] 图片上传，多图床
+- [] 多功能快捷键
+- [] 右键快捷选项
+- [] 主题修改
+- [] 微信复制
+- [] 微信排版
+- [] 格式化、转外链、外链转二维码
+- [] html to md
