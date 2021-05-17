@@ -16,5 +16,6 @@ export const StyledMainWrapper = styled.main`
 
   & > div {
     flex: 1;
+    padding: 15px;
   }
 `;

@@ -1,5 +1,13 @@
 import { StyledPreviewWrapper } from './preview.styles';
+import marked from 'marked';
 
-export default () => {
-  return <StyledPreviewWrapper>preview</StyledPreviewWrapper>;
+interface IPreviewProps {
+  value: string;
+}
+
+export default (props: IPreviewProps) => {
+  const { value } = props;
+  return (
+    <StyledPreviewWrapper dangerouslySetInnerHTML={{ __html: marked(value) }} />
+  );
 };

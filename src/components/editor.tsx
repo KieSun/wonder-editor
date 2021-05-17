@@ -3,11 +3,18 @@ import CodeMirror from '@uiw/react-codemirror';
 import 'codemirror/keymap/sublime';
 import 'codemirror/theme/eclipse.css';
 
-const Editor = () => {
+interface IEditorProps {
+  handleEditorChange: (value: string) => void;
+}
+
+const Editor = (props: IEditorProps) => {
+  const { handleEditorChange } = props;
   const [value, setValue] = useState('');
 
   const handleChange = useCallback((instance) => {
-    setValue(instance.getValue());
+    const value = instance.getValue();
+    setValue(value);
+    handleEditorChange(value);
   }, []);
 
   const handleDrop = useCallback((instance, e) => {
