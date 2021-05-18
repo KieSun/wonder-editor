@@ -30,6 +30,7 @@ const Editor = (props: IEditorProps) => {
         mode: 'markdown',
         lineWrapping: true,
         lineNumbers: false,
+        autofocus: true,
       }}
       onChange={handleChange}
       onDrop={handleDrop}

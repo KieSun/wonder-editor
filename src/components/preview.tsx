@@ -8,6 +8,10 @@ interface IPreviewProps {
 export default (props: IPreviewProps) => {
   const { value } = props;
   return (
-    <StyledPreviewWrapper dangerouslySetInnerHTML={{ __html: marked(value) }} />
+    <StyledPreviewWrapper
+      dangerouslySetInnerHTML={{
+        __html: `<div class="preview">${marked(value)}</div>`,
+      }}
+    />
   );
 };
