@@ -1,13 +1,14 @@
 import { useState, useCallback } from 'react';
-import CodeMirror from '@uiw/react-codemirror';
-import 'codemirror/keymap/sublime';
-import 'codemirror/theme/eclipse.css';
+import { Editor } from '@bytemd/react';
+import footnotes from '@bytemd/plugin-footnotes';
+// @ts-ignore
+import zhHans from 'bytemd/lib/locales/zh_Hans.json';
 
 interface IEditorProps {
   handleEditorChange: (value: string) => void;
 }
 
-const Editor = (props: IEditorProps) => {
+export default (props: IEditorProps) => {
   const { handleEditorChange } = props;
   const [value, setValue] = useState('');
 
@@ -17,25 +18,27 @@ const Editor = (props: IEditorProps) => {
     handleEditorChange(value);
   }, []);
 
-  const handleDrop = useCallback((instance, e) => {
-    console.log(e.dataTransfer.files);
+  const handleUploadImages = useCallback(async (files: File[]) => {
+    console.log(files);
+    return [
+      {
+        url: '',
+        title: '',
+        alert: '',
+      },
+    ];
   }, []);
 
   return (
-    <CodeMirror
+    <Editor
+      mode="split"
       value={value}
-      options={{
-        theme: 'eclipse',
-        keyMap: 'sublime',
-        mode: 'markdown',
-        lineWrapping: true,
-        lineNumbers: false,
-        autofocus: true,
+      locale={zhHans}
+      plugins={[footnotes()]}
+      uploadImages={handleUploadImages}
+      onChange={(v) => {
+        setValue(v);
       }}
-      onChange={handleChange}
-      onDrop={handleDrop}
     />
   );
 };
-
-export default Editor;
