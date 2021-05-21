@@ -40,10 +40,16 @@ const gitee = async (content: string, filename: string, isDefault = false) => {
     access_token: token,
     message: 'Upload image',
   });
+  if (!res) {
+    return '';
+  }
   return res.content.download_url;
 };
 
-export const uploadFile = async (content: string, filename: string) => {
+export const uploadFile = async (filename: string, content?: string) => {
+  if (!content) {
+    return '';
+  }
   const type = localStorage.getItem(UPLOADTYPEKEY) || UploadType.Default;
   switch (type) {
     case UploadType.Gitee: {
