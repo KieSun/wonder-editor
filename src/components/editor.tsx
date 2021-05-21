@@ -3,6 +3,7 @@ import { Editor } from '@bytemd/react';
 import footnotes from '@bytemd/plugin-footnotes';
 // @ts-ignore
 import zhHans from 'bytemd/lib/locales/zh_Hans.json';
+import { fileToBase64, uploadFile } from '@/utils/upload';
 
 interface IEditorProps {
   handleEditorChange: (value: string) => void;
@@ -18,15 +19,26 @@ export default (props: IEditorProps) => {
     handleEditorChange(value);
   }, []);
 
-  const handleUploadImages = useCallback(async (files: File[]) => {
-    console.log(files);
-    return [
-      {
-        url: '',
-        title: '',
-        alert: '',
-      },
-    ];
+  const handleUploadImages = useCallback((files: File[]) => {
+    return Promise.all(
+      files.map(async (file) => {
+        const { name } = file;
+        const content = await fileToBase64(file);
+        if (!content) {
+          return {
+            url: '',
+            title: '',
+            alert: '',
+          };
+        }
+        const url = await uploadFile(content, name);
+        return {
+          url,
+          title: name,
+          alert: '',
+        };
+      }),
+    );
   }, []);
 
   return (
