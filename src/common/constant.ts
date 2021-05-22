@@ -1,6 +1,6 @@
-export const UPLOADTYPEKEY = 'upload_type';
+export const UPLOADCONFIGKEY = 'upload_config';
 
 export enum UploadType {
   Gitee = 'gitee',
-  Default = '',
+  Default = 'default',
 }

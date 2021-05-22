@@ -1,7 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import axios from './axios';
-import { UPLOADTYPEKEY, UploadType } from '@/common/constant';
+import { UploadType, UPLOADCONFIGKEY } from '@/common/constant';
 import { defaultUploadConfig } from '@/common/config';
+import { IUploadConfig } from '@/types';
 
 const getConfig = (type: UploadType) => {
   switch (type) {
@@ -46,11 +47,17 @@ const gitee = async (content: string, filename: string, isDefault = false) => {
   return res.content.download_url;
 };
 
+export const getUploadType = () => {
+  const config = JSON.parse(localStorage.getItem(UPLOADCONFIGKEY) as string);
+  if (!config) return UploadType.Default;
+  return config.type;
+};
+
 export const uploadFile = async (filename: string, content?: string) => {
   if (!content) {
     return '';
   }
-  const type = localStorage.getItem(UPLOADTYPEKEY) || UploadType.Default;
+  const type = getUploadType();
   switch (type) {
     case UploadType.Gitee: {
       break;
