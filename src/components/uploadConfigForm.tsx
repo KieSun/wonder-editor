@@ -1,5 +1,5 @@
 import { Modal, Form, Input, Select, FormInstance, message } from 'antd';
-import { getUploadType } from '@/utils/upload';
+import { getUploadType, getConfig } from '@/utils/upload';
 import { UploadType } from '@/common/constant';
 import { useCallback, useRef, useState } from 'react';
 import { UPLOADCONFIGKEY } from '@/common/constant';
@@ -50,7 +50,7 @@ export default (props: IUploadConfigFormProps) => {
         ref={formRef}
         labelAlign="left"
         initialValues={{
-          ...JSON.parse(localStorage.getItem(UPLOADCONFIGKEY) as string),
+          ...getConfig(type, true),
           type,
         }}
         onValuesChange={handleValuesChange}
