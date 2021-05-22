@@ -160,6 +160,10 @@ export const StyledMainWrapper = styled.main`
           margin-bottom: 0;
         }
 
+        img {
+          width: 100%;
+        }
+
         blockquote {
           color: #333333;
           border-radius: 2px;

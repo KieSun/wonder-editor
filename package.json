@@ -20,12 +20,14 @@
     ]
   },
   "dependencies": {
+    "@ant-design/icons": "^4.6.2",
     "@ant-design/pro-layout": "^6.5.0",
     "@bytemd/plugin-footnotes": "^1.9.2",
     "@bytemd/react": "^1.9.2",
     "@types/styled-components": "^5.1.9",
     "@uiw/react-codemirror": "^3.0.8",
     "@umijs/preset-react": "1.x",
+    "antd": "^4.15.6",
     "axios": "^0.21.1",
     "marked": "^2.0.3",
     "rsuite": "^4.10.1",

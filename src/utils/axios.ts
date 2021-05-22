@@ -1,12 +1,12 @@
 import axios from 'axios';
-import { Alert } from 'rsuite';
+import { message } from 'antd';
 
 axios.interceptors.response.use(
   (response): any => {
     return response.data;
   },
   (error) => {
-    Alert.error('图片上传出错');
+    message.error('图片上传出错');
   },
 );
 
