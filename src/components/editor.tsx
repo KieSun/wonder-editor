@@ -24,7 +24,7 @@ export default (props: IEditorProps) => {
       files.map(async (file) => {
         const { name } = file;
         const content = await fileToBase64(file);
-        const url = await uploadFile(name, content);
+        const url = await uploadFile(file, content);
         if (!url) {
           return {
             url: '',

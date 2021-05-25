@@ -29,6 +29,7 @@
     "@umijs/preset-react": "1.x",
     "antd": "^4.15.6",
     "axios": "^0.21.1",
+    "cos-js-sdk-v5": "^1.2.10",
     "marked": "^2.0.3",
     "rsuite": "^4.10.1",
     "styled-components": "^5.3.0",
