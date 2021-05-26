@@ -74,21 +74,21 @@ export default (props: IUploadConfigFormProps) => {
               label="Token"
               rules={[{ required: true, message: '请输入 token' }]}
             >
-              <Input />
+              <Input placeholder="token" />
             </Form.Item>
             <Form.Item
               name="repo"
               label="Repo"
               rules={[{ required: true, message: '请输入仓库名' }]}
             >
-              <Input />
+              <Input placeholder="仓库名" />
             </Form.Item>
             <Form.Item
               name="userName"
               label="UserName"
               rules={[{ required: true, message: '请输入用户名' }]}
             >
-              <Input />
+              <Input placeholder="用户名" />
             </Form.Item>
           </>
         )}
@@ -96,34 +96,34 @@ export default (props: IUploadConfigFormProps) => {
           <>
             <Form.Item
               name="region"
-              label="确认存储区域"
+              label="存储区域"
               rules={[{ required: true, message: '请输入确认存储区域' }]}
             >
               <Input placeholder="如：oss-cn-hangzhou" />
             </Form.Item>
             <Form.Item
               name="accessKeyId"
-              label="设定AkId"
-              rules={[{ required: true, message: '请设定AkId' }]}
+              label="ID"
+              rules={[{ required: true, message: '请设定 AccessKey ID' }]}
             >
-              <Input placeholder="AccessKeyId" />
+              <Input placeholder="AccessKey ID" />
             </Form.Item>
             <Form.Item
               name="accessKeySecret"
-              label="设定SkId"
-              rules={[{ required: true, message: '请设定SkId' }]}
+              label="Secret"
+              rules={[{ required: true, message: '请设定 AccessKey Secret' }]}
             >
-              <Input placeholder="AccessKeySecret" />
+              <Input placeholder="AccessKey Secret" />
             </Form.Item>
             <Form.Item
               name="bucket"
               label="存储空间名"
               rules={[{ required: true, message: '请输入存储空间名' }]}
             >
-              <Input placeholder="bucket名称" />
+              <Input placeholder="bucket 名称" />
             </Form.Item>
             <Form.Item name="path" label="存储路径">
-              <Input placeholder="指定存储路径，例如img/" />
+              <Input placeholder="指定存储路径，例如 img" />
             </Form.Item>
           </>
         )}
