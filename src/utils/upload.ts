@@ -50,7 +50,7 @@ const gitee = async (content: string, filename: string, isDefault = false) => {
   const res: any = await axios.post(url, {
     content,
     access_token: token,
-    message: 'Upload image',
+    message: 'wonder editor upload picture',
   });
   if (!res) {
     return '';
@@ -58,16 +58,15 @@ const gitee = async (content: string, filename: string, isDefault = false) => {
   return res.content.download_url;
 };
 
-const tencent = async (file: File, filename: string) => {
+const tencent = (file: File, filename: string) => {
   const { secretId, secretKey, bucket, region, path, host } = getConfig(
     UploadType.Tencent,
   );
-  const randomFilename = getFileName(filename);
   const cos = new COS({
     SecretId: secretId,
     SecretKey: secretKey,
   });
-  const newPath = `${path}/${randomFilename}`;
+  const newPath = getFilePath(path, filename);
   return new Promise((resolve, reject) => {
     cos.putObject(
       {
@@ -123,21 +122,17 @@ const aliOssUpload = (file: File, filename: string) => {
 const githubUpload = async (content: string, filename: string) => {
   let { userName, repo, token } = getConfig(UploadType.Github);
 
-  const seperator = '-';
+  const { getFullYear, getMonth, getDate } = new Date();
 
-  const date = new Date();
-
-  const dir = `${date.getFullYear()}${seperator}${
-    date.getMonth() + 1
-  }${seperator}${date.getDate()}`;
+  const dir = `${getFullYear()}-${getMonth() + 1}-${getDate()}`;
 
   const dateFilename = getFileName(filename);
 
   const uploadUrl = `https://api.github.com/repos/${userName}/${repo}/contents/${dir}/${dateFilename}?access_token=${token}`;
 
   const data = {
-    content: content,
-    message: 'wxeditor upload picture',
+    content,
+    message: 'wonder editor upload picture',
   };
   const res: any = await axios.put(uploadUrl, data);
   if (res?.content?.download_url) {
@@ -157,10 +152,10 @@ export const uploadFile = async (file: File, content?: string) => {
       return await gitee(content, name);
     }
     case UploadType.Tencent: {
-      return await tencent(file, name);
+      return tencent(file, name);
     }
     case UploadType.AliOss: {
-      return await aliOssUpload(file, name);
+      return aliOssUpload(file, name);
     }
     case UploadType.Github: {
       return await githubUpload(content, name);
