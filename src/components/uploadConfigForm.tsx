@@ -63,9 +63,11 @@ export default (props: IUploadConfigFormProps) => {
           <Select>
             <Select.Option value="default">默认</Select.Option>
             <Select.Option value="gitee">Gitee</Select.Option>
+            <Select.Option value="github">Github</Select.Option>
+            <Select.Option value="alioss">阿里云</Select.Option>
           </Select>
         </Form.Item>
-        {type !== UploadType.Default ? (
+        {[UploadType.Gitee, UploadType.Github].includes(type) && (
           <>
             <Form.Item
               name="token"
@@ -89,7 +91,42 @@ export default (props: IUploadConfigFormProps) => {
               <Input />
             </Form.Item>
           </>
-        ) : null}
+        )}
+        {type === UploadType.AliOss && (
+          <>
+            <Form.Item
+              name="region"
+              label="确认存储区域"
+              rules={[{ required: true, message: '请输入确认存储区域' }]}
+            >
+              <Input placeholder="如：oss-cn-hangzhou" />
+            </Form.Item>
+            <Form.Item
+              name="accessKeyId"
+              label="设定AkId"
+              rules={[{ required: true, message: '请设定AkId' }]}
+            >
+              <Input placeholder="AccessKeyId" />
+            </Form.Item>
+            <Form.Item
+              name="accessKeySecret"
+              label="设定SkId"
+              rules={[{ required: true, message: '请设定SkId' }]}
+            >
+              <Input placeholder="AccessKeySecret" />
+            </Form.Item>
+            <Form.Item
+              name="bucket"
+              label="存储空间名"
+              rules={[{ required: true, message: '请输入存储空间名' }]}
+            >
+              <Input placeholder="bucket名称" />
+            </Form.Item>
+            <Form.Item name="path" label="存储路径">
+              <Input placeholder="指定存储路径，例如img/" />
+            </Form.Item>
+          </>
+        )}
       </Form>
     </Modal>
   );
