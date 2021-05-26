@@ -122,9 +122,9 @@ const aliOssUpload = (file: File, filename: string) => {
 const githubUpload = async (content: string, filename: string) => {
   let { userName, repo, token } = getConfig(UploadType.Github);
 
-  const { getFullYear, getMonth, getDate } = new Date();
+  const date = new Date();
 
-  const dir = `${getFullYear()}-${getMonth() + 1}-${getDate()}`;
+  const dir = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
   const dateFilename = getFileName(filename);
 
