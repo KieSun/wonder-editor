@@ -1,8 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 import COS from 'cos-js-sdk-v5';
+import OSS from 'ali-oss';
 import axios from './axios';
 import { UPLOADCONFIGKEY, UploadType } from '@/common/constant';
 import { defaultUploadConfig } from '@/common/config';
+import { message } from 'antd';
 
 export const getUploadType = () => {
   const config = JSON.parse(localStorage.getItem(UPLOADCONFIGKEY) as string);
@@ -79,6 +81,46 @@ const tencent = async (file: File, filename: string) => {
   });
 };
 
+/**
+ * 阿里云上传
+ * https://help.aliyun.com/document_detail/64047.html?spm=a2c4g.11186623.6.1213.316026fdDZHimZ
+ * @param file
+ * @param filename
+ */
+const aliOssUpload = (file: File, filename: string) => {
+  let { path, ...config } = getConfig(UploadType.AliOss);
+  let client: OSS;
+
+  if (path[path.length - 1] !== '/') {
+    path += '/';
+  }
+
+  try {
+    client = new OSS(config);
+  } catch (error) {
+    message.error('OSS配置错误');
+    return;
+  }
+  if (!client) return;
+
+  const randomFilename = getFileName(filename);
+
+  const newPath = path ? `${path}${randomFilename}` : randomFilename;
+
+  return new Promise((resolve, reject) => {
+    client
+      .put(newPath, file)
+      .then((response: OSS.PutObjectResult) => {
+        const { url } = response;
+        resolve(url);
+      })
+      .catch((err: Error) => {
+        message.error('上传失败');
+        reject(err);
+      });
+  });
+};
+
 export const uploadFile = async (file: File, content?: string) => {
   if (!content) {
     return '';
@@ -91,6 +133,9 @@ export const uploadFile = async (file: File, content?: string) => {
     }
     case UploadType.Tencent: {
       return await tencent(file, name);
+    }
+    case UploadType.AliOss: {
+      return await aliOssUpload(file, name);
     }
     default: {
       return await gitee(content, name, true);

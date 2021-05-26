@@ -27,6 +27,7 @@
     "@types/styled-components": "^5.1.9",
     "@uiw/react-codemirror": "^3.0.8",
     "@umijs/preset-react": "1.x",
+    "ali-oss": "^6.15.2",
     "antd": "^4.15.6",
     "axios": "^0.21.1",
     "cos-js-sdk-v5": "^1.2.10",
@@ -37,6 +38,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@types/ali-oss": "^6.0.8",
     "@types/marked": "^2.0.2",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
