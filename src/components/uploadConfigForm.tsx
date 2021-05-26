@@ -61,10 +61,11 @@ export default (props: IUploadConfigFormProps) => {
           tooltip="默认图床定期清理数据，推荐自行配置"
         >
           <Select>
-            <Select.Option value="default">默认</Select.Option>
-            <Select.Option value="gitee">Gitee</Select.Option>
-            <Select.Option value="github">Github</Select.Option>
-            <Select.Option value="alioss">阿里云</Select.Option>
+            <Select.Option value={UploadType.Default}>默认</Select.Option>
+            <Select.Option value={UploadType.Gitee}>Gitee</Select.Option>
+            <Select.Option value={UploadType.Github}>Github</Select.Option>
+            <Select.Option value={UploadType.AliOss}>阿里云</Select.Option>
+            <Select.Option value={UploadType.Tencent}>腾讯云</Select.Option>
           </Select>
         </Form.Item>
         {[UploadType.Gitee, UploadType.Github].includes(type) && (
@@ -97,9 +98,9 @@ export default (props: IUploadConfigFormProps) => {
             <Form.Item
               name="region"
               label="存储区域"
-              rules={[{ required: true, message: '请输入确认存储区域' }]}
+              rules={[{ required: true, message: '请输入存储区域' }]}
             >
-              <Input placeholder="如：oss-cn-hangzhou" />
+              <Input placeholder="例如 oss-cn-hangzhou" />
             </Form.Item>
             <Form.Item
               name="accessKeyId"
@@ -124,6 +125,44 @@ export default (props: IUploadConfigFormProps) => {
             </Form.Item>
             <Form.Item name="path" label="存储路径">
               <Input placeholder="指定存储路径，例如 img" />
+            </Form.Item>
+          </>
+        )}
+        {type === UploadType.Tencent && (
+          <>
+            <Form.Item
+              name="region"
+              label="存储区域"
+              rules={[{ required: true, message: '请输入确认存储区域' }]}
+            >
+              <Input placeholder="例如 ap-shanghai" />
+            </Form.Item>
+            <Form.Item
+              name="secretId"
+              label="Secret ID"
+              rules={[{ required: true, message: '请设定 Secret ID' }]}
+            >
+              <Input placeholder="Secret ID" />
+            </Form.Item>
+            <Form.Item
+              name="secretKey"
+              label="Secret Key"
+              rules={[{ required: true, message: '请设定 Secret Key' }]}
+            >
+              <Input placeholder="Secret Key" />
+            </Form.Item>
+            <Form.Item
+              name="bucket"
+              label="存储空间名"
+              rules={[{ required: true, message: '请输入存储空间名' }]}
+            >
+              <Input placeholder="bucket 名称" />
+            </Form.Item>
+            <Form.Item name="path" label="存储路径">
+              <Input placeholder="指定存储路径，例如 img" />
+            </Form.Item>
+            <Form.Item name="host" label="域名">
+              <Input placeholder="指定访问域名，例如 https://xx.com" />
             </Form.Item>
           </>
         )}
