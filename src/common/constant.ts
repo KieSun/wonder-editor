@@ -5,4 +5,5 @@ export enum UploadType {
   Default = 'default',
   Tencent = 'tencent',
   AliOss = 'alioss',
+  Github = 'github',
 }

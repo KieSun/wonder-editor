@@ -63,10 +63,11 @@ export default (props: IUploadConfigFormProps) => {
           <Select>
             <Select.Option value="default">默认</Select.Option>
             <Select.Option value="gitee">Gitee</Select.Option>
+            <Select.Option value="github">Github</Select.Option>
             <Select.Option value="alioss">阿里云</Select.Option>
           </Select>
         </Form.Item>
-        {type === UploadType.Gitee && (
+        {[UploadType.Gitee, UploadType.Github].includes(type) && (
           <>
             <Form.Item
               name="token"

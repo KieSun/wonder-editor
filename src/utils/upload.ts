@@ -121,6 +121,38 @@ const aliOssUpload = (file: File, filename: string) => {
   });
 };
 
+const githubUpload = async (file: File, filename: string) => {
+  let { userName, repo, token } = getConfig(UploadType.Github);
+
+  const seperator = '-';
+
+  const date = new Date();
+
+  const dir =
+    date.getFullYear() +
+    seperator +
+    (date.getMonth() + 1) +
+    seperator +
+    date.getDate();
+
+  const dateFilename = new Date().getTime() + seperator + filename;
+
+  const uploadUrl = `https://api.github.com/repos/${userName}/${repo}/contents/${dir}/${dateFilename}?access_token=${token}`;
+
+  const base64 = await fileToBase64(file);
+
+  const data = {
+    content: base64,
+    message: 'wxeditor upload picture',
+  };
+  const res: any = await axios.put(uploadUrl, data);
+  if (!res) return '';
+  if (res.content.download_url) {
+    return `https://cdn.jsdelivr.net/gh/${userName}/${repo}/${dir}/${dateFilename}`;
+  }
+  return '';
+};
+
 export const uploadFile = async (file: File, content?: string) => {
   if (!content) {
     return '';
@@ -136,6 +168,9 @@ export const uploadFile = async (file: File, content?: string) => {
     }
     case UploadType.AliOss: {
       return await aliOssUpload(file, name);
+    }
+    case UploadType.Github: {
+      return await githubUpload(file, name);
     }
     default: {
       return await gitee(content, name, true);
