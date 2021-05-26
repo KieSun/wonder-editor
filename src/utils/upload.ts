@@ -24,6 +24,13 @@ const getFileName = (filename: string) => {
   return `${uuidv4()}.${fileSuffix}`;
 };
 
+const getFilePath = (path: string, filename: string) => {
+  const pathLength = path.length || 0;
+  const hasLine = path[pathLength - 1] === '/';
+  const retPath = hasLine ? path.substr(0, pathLength - 1) : path;
+  return `${retPath}/${getFileName(filename)}`;
+};
+
 export const fileToBase64 = (file: File): Promise<string | undefined> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -91,10 +98,6 @@ const aliOssUpload = (file: File, filename: string) => {
   let { path, ...config } = getConfig(UploadType.AliOss);
   let client: OSS;
 
-  if (path[path.length - 1] !== '/') {
-    path += '/';
-  }
-
   try {
     client = new OSS(config);
   } catch (error) {
@@ -103,13 +106,9 @@ const aliOssUpload = (file: File, filename: string) => {
   }
   if (!client) return;
 
-  const randomFilename = getFileName(filename);
-
-  const newPath = path ? `${path}${randomFilename}` : randomFilename;
-
   return new Promise((resolve, reject) => {
     client
-      .put(newPath, file)
+      .put(getFilePath(path, filename), file)
       .then((response: OSS.PutObjectResult) => {
         const { url } = response;
         resolve(url);
@@ -121,33 +120,27 @@ const aliOssUpload = (file: File, filename: string) => {
   });
 };
 
-const githubUpload = async (file: File, filename: string) => {
+const githubUpload = async (content: string, filename: string) => {
   let { userName, repo, token } = getConfig(UploadType.Github);
 
   const seperator = '-';
 
   const date = new Date();
 
-  const dir =
-    date.getFullYear() +
-    seperator +
-    (date.getMonth() + 1) +
-    seperator +
-    date.getDate();
+  const dir = `${date.getFullYear()}${seperator}${
+    date.getMonth() + 1
+  }${seperator}${date.getDate()}`;
 
-  const dateFilename = new Date().getTime() + seperator + filename;
+  const dateFilename = getFileName(filename);
 
   const uploadUrl = `https://api.github.com/repos/${userName}/${repo}/contents/${dir}/${dateFilename}?access_token=${token}`;
 
-  const base64 = await fileToBase64(file);
-
   const data = {
-    content: base64,
+    content: content,
     message: 'wxeditor upload picture',
   };
   const res: any = await axios.put(uploadUrl, data);
-  if (!res) return '';
-  if (res.content.download_url) {
+  if (res?.content?.download_url) {
     return `https://cdn.jsdelivr.net/gh/${userName}/${repo}/${dir}/${dateFilename}`;
   }
   return '';
@@ -170,7 +163,7 @@ export const uploadFile = async (file: File, content?: string) => {
       return await aliOssUpload(file, name);
     }
     case UploadType.Github: {
-      return await githubUpload(file, name);
+      return await githubUpload(content, name);
     }
     default: {
       return await gitee(content, name, true);
