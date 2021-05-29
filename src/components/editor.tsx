@@ -23,14 +23,7 @@ export default (props: IEditorProps) => {
     return Promise.all(
       files.map(async (file) => {
         const { name } = file;
-        const url = await upload.uploadFile(file, name);
-        if (!url) {
-          return {
-            url: '',
-            title: '',
-            alert: '',
-          };
-        }
+        const url = (await upload.uploadFile(file, name)) || '';
         return {
           url,
           title: name,
