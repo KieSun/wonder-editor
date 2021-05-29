@@ -1,5 +1,4 @@
 import { Modal, Form, Input, Select, FormInstance, message } from 'antd';
-// import { getUploadType, getConfig } from '@/utils/upload';
 import upload from '@/utils/upload';
 import { UploadType } from '@/common/constant';
 import { useCallback, useRef, useState } from 'react';

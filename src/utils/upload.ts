@@ -106,13 +106,11 @@ class UploadController {
     const { token, repo, userName } = this.config;
     const randomFilename = this.getFileName(name);
     const url = `https://gitee.com/api/v5/repos/${userName}/${repo}/contents/${randomFilename}`;
-    console.log(url);
     const res: any = await axios.post(url, {
       content,
       access_token: token,
       message: 'wonder editor upload picture',
     });
-    console.log(res, 111);
     if (!res) {
       return '';
     }
