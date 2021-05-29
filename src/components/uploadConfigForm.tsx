@@ -1,8 +1,7 @@
 import { Modal, Form, Input, Select, FormInstance, message } from 'antd';
-import { getUploadType, getConfig } from '@/utils/upload';
+import upload from '@/utils/upload';
 import { UploadType } from '@/common/constant';
 import { useCallback, useRef, useState } from 'react';
-import { UPLOADCONFIGKEY } from '@/common/constant';
 import { IUploadConfig } from '@/types';
 
 interface IUploadConfigFormProps {
@@ -17,7 +16,7 @@ const layout = {
 
 export default (props: IUploadConfigFormProps) => {
   const { handleCancel, visible } = props;
-  const [type, setType] = useState(getUploadType());
+  const [type, setType] = useState(upload.type);
   const formRef = useRef<FormInstance>(null);
 
   const handleValuesChange = useCallback((changedFields) => {
@@ -30,10 +29,7 @@ export default (props: IUploadConfigFormProps) => {
 
   const handleSubmit = useCallback(async () => {
     await formRef.current?.validateFields();
-    localStorage.setItem(
-      UPLOADCONFIGKEY,
-      JSON.stringify(formRef.current!.getFieldsValue()),
-    );
+    upload.setConfig(formRef.current!.getFieldsValue());
     message.success('设置成功');
     handleCancel();
   }, [formRef]);
@@ -50,7 +46,7 @@ export default (props: IUploadConfigFormProps) => {
         ref={formRef}
         labelAlign="left"
         initialValues={{
-          ...getConfig(type, true),
+          ...upload.config,
           type,
         }}
         onValuesChange={handleValuesChange}

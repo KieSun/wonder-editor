@@ -3,7 +3,7 @@ import { Editor } from '@bytemd/react';
 import footnotes from '@bytemd/plugin-footnotes';
 // @ts-ignore
 import zhHans from 'bytemd/lib/locales/zh_Hans.json';
-import { fileToBase64, uploadFile } from '@/utils/upload';
+import upload from '@/utils/upload';
 
 interface IEditorProps {
   handleEditorChange: (value: string) => void;
@@ -23,8 +23,7 @@ export default (props: IEditorProps) => {
     return Promise.all(
       files.map(async (file) => {
         const { name } = file;
-        const content = await fileToBase64(file);
-        const url = (await uploadFile(file, content)) || '';
+        const url = (await upload.uploadFile(file, name)) || '';
         return {
           url,
           title: name,
