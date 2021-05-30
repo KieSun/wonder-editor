@@ -38,11 +38,12 @@ export default (props: IEditorProps) => {
     return Promise.all(
       files.map(async (file) => {
         const { name } = file;
-        const url = (await upload.uploadFile(file, name)) || '';
+        let url = '';
+        if (upload.verifyImage(file)) {
+          url = (await upload.uploadFile(file, name)) || '';
+        }
         return {
           url,
-          title: name,
-          alert: name,
         };
       }),
     );

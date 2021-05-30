@@ -99,7 +99,7 @@ class UploadController {
   }
 
   private [UploadType.Default](file: File, content: string, name: string) {
-    this[UploadType.Gitee](file, content, name);
+    return this[UploadType.Gitee](file, content, name);
   }
 
   private async [UploadType.Gitee](file: File, content: string, name: string) {
@@ -172,6 +172,18 @@ class UploadController {
 
   public get type() {
     return this.config.type;
+  }
+
+  public verifyImage(file: File) {
+    const size = file.size / 1024 / 1024;
+    if (this.type === UploadType.Default && size >= 1) {
+      message.error('默认图床不支持大于 1MB 的图片上传');
+      return false;
+    } else if (size >= 5) {
+      message.error('公众号不支持大于 5MB 的图片上传');
+      return false;
+    }
+    return true;
   }
 }
 
