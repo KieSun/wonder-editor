@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Menu, Divider, Row, Col, Dropdown, Button } from 'antd';
+import { emit } from 'react-wonder-hooks';
 import { StyledHeader } from '@/components/header.styles';
 import UploadConfigForm from './uploadConfigForm';
+import { Notify } from '@/common/constant';
 
 export default () => {
   const [showUploadDialog, setShowUploadDialog] = useState(false);
@@ -11,6 +13,7 @@ export default () => {
       <Menu.Item onClick={() => setShowUploadDialog((v) => !v)}>
         图床设置
       </Menu.Item>
+      <Menu.Item onClick={() => emit(Notify.FormatDoc)}>格式化文档</Menu.Item>
     </Menu>
   );
 

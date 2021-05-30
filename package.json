@@ -32,6 +32,7 @@
     "axios": "^0.21.1",
     "cos-js-sdk-v5": "^1.2.10",
     "marked": "^2.0.3",
+    "react-wonder-hooks": "0.0.6",
     "rsuite": "^4.10.1",
     "styled-components": "^5.3.0",
     "umi": "^3.4.19",

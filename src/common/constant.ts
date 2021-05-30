@@ -7,3 +7,7 @@ export enum UploadType {
   AliOss = 'alioss',
   Github = 'github',
 }
+
+export enum Notify {
+  FormatDoc = 'FormatDoc',
+}

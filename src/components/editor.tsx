@@ -4,9 +4,11 @@ import footnotes from '@bytemd/plugin-footnotes';
 // @ts-ignore
 import zhHans from 'bytemd/lib/locales/zh_Hans.json';
 import CodeMirror from 'codemirror';
+import { useEventbus } from 'react-wonder-hooks';
 import keydown from '@/common/keyCode';
 import upload from '@/utils/upload';
 import { formatMarkdown } from '@/utils/format';
+import { Notify } from '@/common/constant';
 
 interface IEditorProps {
   handleEditorChange: (value: string) => void;
@@ -64,6 +66,8 @@ export default (props: IEditorProps) => {
     const instance = (document.querySelector('.CodeMirror') as any)?.CodeMirror;
     setEditor(instance);
   }, []);
+
+  useEventbus(Notify.FormatDoc, handleFormatter, [handleFormatter]);
 
   return (
     <Editor
