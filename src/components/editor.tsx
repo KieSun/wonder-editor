@@ -4,10 +4,9 @@ import footnotes from '@bytemd/plugin-footnotes';
 // @ts-ignore
 import zhHans from 'bytemd/lib/locales/zh_Hans.json';
 import CodeMirror from 'codemirror';
-import prettier from 'prettier';
-import markdownPlugin from 'prettier/parser-markdown';
 import keydown from '@/common/keyCode';
 import upload from '@/utils/upload';
+import { formatMarkdown } from '@/utils/format';
 
 interface IEditorProps {
   handleEditorChange: (value: string) => void;
@@ -24,11 +23,7 @@ export default (props: IEditorProps) => {
   }, []);
 
   const handleFormatter = useCallback(() => {
-    const formattedValue = prettier.format(value, {
-      parser: 'markdown',
-      plugins: [markdownPlugin],
-    });
-    handleChange(formattedValue);
+    handleChange(formatMarkdown(value));
     setTimeout(() => {
       if (editor) {
         const line = editor.lastLine() - 1;
