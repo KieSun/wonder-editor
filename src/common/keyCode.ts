@@ -1,3 +1,3 @@
-const KeyCode = { S: 83 };
+const KeyCode = { S: 's' };
 
 export default KeyCode;
