@@ -51,8 +51,8 @@ export default (props: IEditorProps) => {
 
   useEffect(() => {
     const listener = (event: KeyboardEvent) => {
-      const { keyCode, ctrlKey, metaKey } = event;
-      if (keyCode === keydown.S && (ctrlKey || metaKey)) {
+      const { key, ctrlKey, metaKey } = event;
+      if (key === keydown.S && (ctrlKey || metaKey)) {
         event.preventDefault();
         handleFormatter();
       }
