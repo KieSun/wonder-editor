@@ -50,16 +50,21 @@ export default (props: IEditorProps) => {
   }, []);
 
   useEffect(() => {
-    const listener = (event: KeyboardEvent) => {
+    const keydownListener = (event: KeyboardEvent) => {
       const { key, ctrlKey, metaKey } = event;
       if (key === keydown.S && (ctrlKey || metaKey)) {
         event.preventDefault();
         handleFormatter();
       }
     };
-    document.addEventListener('keydown', listener);
+    document.addEventListener('keydown', keydownListener);
+    const contextmenuListener = (e: MouseEvent) => {
+      e.preventDefault();
+    };
+    document.addEventListener('contextmenu', contextmenuListener);
     return () => {
-      document.removeEventListener('keydown', listener);
+      document.removeEventListener('keydown', keydownListener);
+      document.removeEventListener('contextmenu', contextmenuListener);
     };
   }, [handleFormatter]);
 
