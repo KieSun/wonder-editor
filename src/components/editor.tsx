@@ -4,7 +4,7 @@ import footnotes from '@bytemd/plugin-footnotes';
 // @ts-ignore
 import zhHans from 'bytemd/lib/locales/zh_Hans.json';
 import CodeMirror from 'codemirror';
-import { useEventbus } from 'react-wonder-hooks';
+import { emit, useEventbus } from 'react-wonder-hooks';
 import styled, { css } from 'styled-components';
 import { Menu } from 'antd';
 import keydown from '@/common/keyCode';
@@ -28,6 +28,7 @@ const StyledMenuWrapper = styled.div<{ left: number; top: number }>`
       position: absolute;
       left: ${props.left}px;
       top: ${props.top}px;
+      width: 150px;
       border-radius: 4px;
       background-color: #fff;
       box-shadow: 0 4px 8px 0 rgb(0 0 0 / 12%), 0 2px 4px 0 rgb(0 0 0 / 8%);
@@ -127,9 +128,9 @@ export default (props: IEditorProps) => {
       {menuInfo.show ? (
         <StyledMenuWrapper left={menuInfo.x!} top={menuInfo.y!}>
           <Menu>
-            <Menu.Item>菜单项</Menu.Item>
-            <Menu.Item>菜单项</Menu.Item>
-            <Menu.Item>菜单项</Menu.Item>
+            <Menu.Item onClick={() => emit(Notify.FormatDoc)}>
+              格式化文档
+            </Menu.Item>
           </Menu>
         </StyledMenuWrapper>
       ) : null}
