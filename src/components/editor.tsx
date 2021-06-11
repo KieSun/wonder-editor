@@ -5,6 +5,8 @@ import footnotes from '@bytemd/plugin-footnotes';
 import zhHans from 'bytemd/lib/locales/zh_Hans.json';
 import CodeMirror from 'codemirror';
 import { useEventbus } from 'react-wonder-hooks';
+import styled, { css } from 'styled-components';
+import { Menu } from 'antd';
 import keydown from '@/common/keyCode';
 import upload from '@/utils/upload';
 import { formatMarkdown } from '@/utils/format';
@@ -14,10 +16,31 @@ interface IEditorProps {
   handleEditorChange: (value: string) => void;
 }
 
+interface IMenuInfo {
+  show: boolean;
+  x?: number;
+  y?: number;
+}
+
+const StyledMenuWrapper = styled.div<{ left: number; top: number }>`
+  ${(props) => {
+    return css`
+      position: absolute;
+      left: ${props.left}px;
+      top: ${props.top}px;
+      border-radius: 4px;
+      background-color: #fff;
+      box-shadow: 0 4px 8px 0 rgb(0 0 0 / 12%), 0 2px 4px 0 rgb(0 0 0 / 8%);
+      z-index: 9999;
+    `;
+  }}
+`;
+
 export default (props: IEditorProps) => {
   const { handleEditorChange } = props;
   const [value, setValue] = useState('');
   const [editor, setEditor] = useState<CodeMirror.Editor>();
+  const [menuInfo, setMenuInfo] = useState<IMenuInfo>({ show: false });
 
   const handleChange = useCallback((value: string) => {
     setValue(value);
@@ -57,14 +80,30 @@ export default (props: IEditorProps) => {
         handleFormatter();
       }
     };
-    document.addEventListener('keydown', keydownListener);
-    const contextmenuListener = (e: MouseEvent) => {
+    const contextmenuListener = (e: any) => {
+      setMenuInfo({
+        show: true,
+        x: e.clientX,
+        y: e.clientY,
+      });
       e.preventDefault();
     };
-    document.addEventListener('contextmenu', contextmenuListener);
+    const clickListener = () => {
+      setMenuInfo({
+        show: false,
+      });
+    };
+    document.addEventListener('keydown', keydownListener);
+    document.addEventListener('click', clickListener);
+    document
+      .querySelector('.bytemd-editor')
+      ?.addEventListener('contextmenu', contextmenuListener);
     return () => {
       document.removeEventListener('keydown', keydownListener);
-      document.removeEventListener('contextmenu', contextmenuListener);
+      document.removeEventListener('click', clickListener);
+      document
+        .querySelector('.bytemd-editor')
+        ?.removeEventListener('contextmenu', contextmenuListener);
     };
   }, [handleFormatter]);
 
@@ -76,13 +115,24 @@ export default (props: IEditorProps) => {
   useEventbus(Notify.FormatDoc, handleFormatter, [handleFormatter]);
 
   return (
-    <Editor
-      mode="split"
-      value={value}
-      locale={zhHans}
-      plugins={[footnotes()]}
-      uploadImages={handleUploadImages}
-      onChange={handleChange}
-    />
+    <>
+      <Editor
+        mode="split"
+        value={value}
+        locale={zhHans}
+        plugins={[footnotes()]}
+        uploadImages={handleUploadImages}
+        onChange={handleChange}
+      />
+      {menuInfo.show ? (
+        <StyledMenuWrapper left={menuInfo.x!} top={menuInfo.y!}>
+          <Menu>
+            <Menu.Item>菜单项</Menu.Item>
+            <Menu.Item>菜单项</Menu.Item>
+            <Menu.Item>菜单项</Menu.Item>
+          </Menu>
+        </StyledMenuWrapper>
+      ) : null}
+    </>
   );
 };

@@ -11,7 +11,7 @@ export const StyledMainWrapper = styled.main`
   margin: 20px;
   flex: 1;
 
-  & > div {
+  & > div:first-child {
     flex: 1;
 
     & > .bytemd {
