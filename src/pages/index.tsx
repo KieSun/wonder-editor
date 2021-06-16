@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import Editor from '@/components/editor';
 import Header from '@/components/header';
+import EditorThemes from '@/components/themes';
 import 'bytemd/dist/index.min.css';
 import 'antd/dist/antd.css';
 import { StyledWrapper, StyledMainWrapper } from './styles';
@@ -16,7 +17,10 @@ export default function IndexPage() {
     <StyledWrapper>
       <Header />
       <StyledMainWrapper>
-        <Editor handleEditorChange={handleEditorChange} />
+        <Editor
+          handleEditorChange={handleEditorChange}
+          plugins={[EditorThemes()]}
+        />
       </StyledMainWrapper>
     </StyledWrapper>
   );

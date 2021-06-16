@@ -1,6 +1,8 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { Editor } from '@bytemd/react';
 import footnotes from '@bytemd/plugin-footnotes';
+import frontmatter from '@bytemd/plugin-frontmatter';
+
 // @ts-ignore
 import zhHans from 'bytemd/lib/locales/zh_Hans.json';
 import CodeMirror from 'codemirror';
@@ -14,6 +16,7 @@ import { Notify } from '@/common/constant';
 
 interface IEditorProps {
   handleEditorChange: (value: string) => void;
+  plugins: any;
 }
 
 interface IMenuInfo {
@@ -121,7 +124,7 @@ export default (props: IEditorProps) => {
         mode="split"
         value={value}
         locale={zhHans}
-        plugins={[footnotes()]}
+        plugins={[footnotes(), frontmatter(), ...props.plugins]}
         uploadImages={handleUploadImages}
         onChange={handleChange}
       />
