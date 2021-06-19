@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import { Menu, Divider, Row, Col, Dropdown, Button } from 'antd';
+import { useCallback, useState } from 'react';
+import { Button, Col, Divider, Dropdown, Menu, Row, message } from 'antd';
 import { emit } from 'react-wonder-hooks';
 import { StyledHeader } from '@/components/header.styles';
 import UploadConfigForm from './uploadConfigForm';
 import { Notify } from '@/common/constant';
+import { inlineStyleOfHTML, solveImg } from '@/utils/copy';
 
 export default () => {
   const [showUploadDialog, setShowUploadDialog] = useState(false);
@@ -17,6 +18,24 @@ export default () => {
     </Menu>
   );
 
+  const handleCopy = useCallback(() => {
+    const preview = document.querySelector('.markdown-body');
+    if (preview && preview.firstChild && preview.lastChild) {
+      window.getSelection()?.removeAllRanges();
+      const originalHTML = preview.innerHTML;
+      preview.innerHTML = inlineStyleOfHTML();
+      solveImg();
+      let range = document.createRange();
+      range.setStartBefore(preview.firstChild);
+      range.setEndAfter(preview.lastChild);
+      window.getSelection()?.addRange(range);
+      document.execCommand('copy');
+      window.getSelection()?.removeAllRanges();
+      preview.innerHTML = originalHTML;
+      message.success('复制成功');
+    }
+  }, []);
+
   return (
     <StyledHeader>
       <Row align="middle">
@@ -26,6 +45,11 @@ export default () => {
               功能
             </Button>
           </Dropdown>
+        </Col>
+        <Col>
+          <Button type="text" size="large" onClick={handleCopy}>
+            复制
+          </Button>
         </Col>
       </Row>
       <Divider />
