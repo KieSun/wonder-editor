@@ -19,21 +19,23 @@ export default () => {
   );
 
   const handleCopy = useCallback(() => {
-    const preview = document.querySelector('.markdown-body');
-    if (preview && preview.firstChild && preview.lastChild) {
-      window.getSelection()?.removeAllRanges();
-      const originalHTML = preview.innerHTML;
-      preview.innerHTML = inlineStyleOfHTML();
-      solveImg();
-      let range = document.createRange();
-      range.setStartBefore(preview.firstChild);
-      range.setEndAfter(preview.lastChild);
-      window.getSelection()?.addRange(range);
-      document.execCommand('copy');
-      window.getSelection()?.removeAllRanges();
-      preview.innerHTML = originalHTML;
-      message.success('复制成功');
-    }
+    const textElem = document.createElement('textarea');
+    const selection = window.getSelection();
+
+    selection?.removeAllRanges();
+    textElem.innerHTML = inlineStyleOfHTML();
+    textElem.className = 'temporary-textarea';
+
+    document.body.appendChild(textElem);
+
+    // solveImg()
+
+    // 选中 textarea 中的原生 html 标签
+    selection?.selectAllChildren(textElem);
+
+    document.execCommand('copy');
+    message.success('复制成功');
+    document.body.removeChild(textElem);
   }, []);
 
   return (
