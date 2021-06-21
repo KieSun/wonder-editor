@@ -15,7 +15,6 @@ export const inlineStyleOfHTML = () => {
 export function solveImg() {
   const preview = document.querySelector('.temporary-textarea');
   const images = preview!.getElementsByTagName('img');
-  console.log('images =>', images);
   for (const image of images) {
     const width = image.getAttribute('width') || '100%';
     const height = image.getAttribute('height') || '100%';
