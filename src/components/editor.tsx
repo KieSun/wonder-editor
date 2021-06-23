@@ -11,6 +11,7 @@ import keydown from '@/common/keyCode';
 import upload from '@/utils/upload';
 import { formatMarkdown } from '@/utils/format';
 import { Notify } from '@/common/constant';
+import links from 'remark-reference-links';
 
 interface IEditorProps {
   handleEditorChange: (value: string) => void;
@@ -115,13 +116,21 @@ export default (props: IEditorProps) => {
 
   useEventbus(Notify.FormatDoc, handleFormatter, [handleFormatter]);
 
+  function pl() {
+    return {
+      remark: (u) => {
+        return u.use(links);
+      },
+    };
+  }
+
   return (
     <>
       <Editor
         mode="split"
         value={value}
         locale={zhHans}
-        plugins={[footnotes()]}
+        plugins={[footnotes(), pl()]}
         uploadImages={handleUploadImages}
         onChange={handleChange}
       />
