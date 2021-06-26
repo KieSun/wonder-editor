@@ -13,6 +13,8 @@ import { formatMarkdown } from '@/utils/format';
 import { Notify } from '@/common/constant';
 import { linkToFootnotePlugin } from '@/utils/remarkPlugins';
 import gfm from '@bytemd/plugin-gfm';
+import highlight from '@bytemd/plugin-highlight';
+import 'highlight.js/styles/vs.css';
 
 interface IEditorProps {
   handleEditorChange: (value: string) => void;
@@ -123,7 +125,7 @@ export default (props: IEditorProps) => {
         mode="split"
         value={value}
         locale={zhHans}
-        plugins={[gfm(), linkToFootnotePlugin(), footnotes()]}
+        plugins={[gfm(), highlight(), linkToFootnotePlugin(), footnotes()]}
         uploadImages={handleUploadImages}
         onChange={handleChange}
       />

@@ -215,14 +215,18 @@ export const baseTheme = css`
     margin-bottom: 0;
   }
 
-  .footnotes {
-    & > hr:first-child {
-      display: none;
-    }
+  .markdown-body p code {
+    background-color: #f7f7f7;
+    border-radius: 4px;
+    padding: 3px 5px;
+    color: #d14;
+  }
 
-    li p {
-      display: inline-block;
-    }
+  .markdown-body pre {
+    padding: 10px;
+    background-color: #f7f7f7;
+    border-radius: 4px;
+    font-size: 12px;
   }
 `;
 
@@ -244,6 +248,25 @@ export const StyledMainWrapper = styled.main`
       }
 
       ${baseTheme}
+
+      .markdown-body {
+        pre {
+          .hljs {
+            background-color: inherit;
+            font-size: inherit;
+          }
+        }
+
+        .footnotes {
+          & > hr:first-child {
+            display: none;
+          }
+
+          li p {
+            display: inline-block;
+          }
+        }
+      }
     }
   }
 `;

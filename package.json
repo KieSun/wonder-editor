@@ -24,6 +24,7 @@
     "@ant-design/pro-layout": "^6.5.0",
     "@bytemd/plugin-footnotes": "^1.9.2",
     "@bytemd/plugin-gfm": "^1.9.2",
+    "@bytemd/plugin-highlight": "^1.9.2",
     "@bytemd/react": "^1.9.2",
     "@types/styled-components": "^5.1.9",
     "@uiw/react-codemirror": "^3.0.8",
