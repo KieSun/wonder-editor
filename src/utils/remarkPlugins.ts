@@ -1,5 +1,6 @@
 import visit, { Visitor } from 'unist-util-visit';
-import { Node } from 'unist';
+import { Node, Parent } from 'unist';
+import QRCode from 'qrcode';
 
 export function linkToFootnotePlugin() {
   return {
@@ -32,6 +33,53 @@ function transformer(tree: any) {
         {
           type: 'html',
           value: '</span>',
+        },
+      );
+      const id = `qrcode_${identifier}`;
+      setTimeout(async () => {
+        const wrapper = document.querySelector(
+          `#user-content-${id}`,
+        )?.parentElement;
+        if (wrapper) {
+          wrapper.setAttribute('class', 'qrcode_wrapper');
+          const svgWrapper = document.createElement('div');
+          svgWrapper.innerHTML = await QRCode.toString(node.url as string, {
+            color: {
+              light: 'inherit',
+            },
+          });
+          wrapper.append(svgWrapper);
+        }
+      });
+      tree.children.splice(
+        tree.children.findIndex((item: Parent | undefined) => item === parent) +
+          1,
+        0,
+        {
+          type: 'element',
+          children: [
+            {
+              type: 'html',
+              value: `<div id="${id}">`,
+            },
+            {
+              type: 'paragraph',
+              children: [{ type: 'text', value: '111123' }],
+            },
+            {
+              type: 'paragraph',
+              children: [{ type: 'text', value: '11112312323' }],
+            },
+            {
+              type: 'html',
+              value: '</div>',
+            },
+          ],
+          data: [
+            {
+              class: 'qrcode',
+            },
+          ],
         },
       );
       tree.children.push({

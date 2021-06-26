@@ -215,6 +215,15 @@ export const baseTheme = css`
     margin-bottom: 0;
   }
 
+  .markdown-body p .sup_label,
+  .markdown-body p sup a {
+    color: #d14;
+  }
+
+  .markdown-body p sup {
+    padding-left: 3px;
+  }
+
   .markdown-body p code {
     background-color: #f7f7f7;
     border-radius: 4px;
@@ -254,6 +263,36 @@ export const StyledMainWrapper = styled.main`
           .hljs {
             background-color: inherit;
             font-size: inherit;
+          }
+        }
+
+        .qrcode_wrapper {
+          margin: 0.8em 0;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 4px 10px;
+          background-color: #f7f7f7;
+          border-radius: 4px;
+
+          & > div:first-child {
+            display: flex;
+            flex-direction: column;
+            width: 70%;
+
+            & > p {
+              margin: 0;
+              font-size: 12px;
+              width: 100%;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            }
+          }
+
+          & > div:last-child {
+            width: 80px;
+            height: 80px;
           }
         }
 
