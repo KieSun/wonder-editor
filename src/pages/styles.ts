@@ -225,7 +225,7 @@ export const StyledMainWrapper = styled.main`
     flex: 1;
 
     & > .bytemd {
-      height: 100%;
+      height: calc(100vh - 80px);
       border-radius: 6px;
       overflow: hidden;
 

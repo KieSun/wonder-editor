@@ -1,4 +1,4 @@
-import visit, { Node, Visitor } from 'unist-util-visit';
+import { visit, Node, Visitor } from 'unist-util-visit';
 
 export function linkToFootnotePlugin() {
   return {
