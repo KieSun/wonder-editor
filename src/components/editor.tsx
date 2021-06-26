@@ -12,6 +12,7 @@ import upload from '@/utils/upload';
 import { formatMarkdown } from '@/utils/format';
 import { Notify } from '@/common/constant';
 import { linkToFootnotePlugin } from '@/utils/remarkPlugins';
+import gfm from '@bytemd/plugin-gfm';
 
 interface IEditorProps {
   handleEditorChange: (value: string) => void;
@@ -122,7 +123,7 @@ export default (props: IEditorProps) => {
         mode="split"
         value={value}
         locale={zhHans}
-        plugins={[linkToFootnotePlugin(), footnotes()]}
+        plugins={[gfm(), linkToFootnotePlugin(), footnotes()]}
         uploadImages={handleUploadImages}
         onChange={handleChange}
       />

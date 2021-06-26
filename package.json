@@ -23,6 +23,7 @@
     "@ant-design/icons": "^4.6.2",
     "@ant-design/pro-layout": "^6.5.0",
     "@bytemd/plugin-footnotes": "^1.9.2",
+    "@bytemd/plugin-gfm": "^1.9.2",
     "@bytemd/react": "^1.9.2",
     "@types/styled-components": "^5.1.9",
     "@uiw/react-codemirror": "^3.0.8",
@@ -37,7 +38,6 @@
     "rsuite": "^4.10.1",
     "styled-components": "^5.3.0",
     "umi": "^3.4.19",
-    "unist-util-visit": "^3.1.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
