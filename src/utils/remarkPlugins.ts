@@ -75,11 +75,6 @@ function transformer(tree: any) {
               value: '</div>',
             },
           ],
-          data: [
-            {
-              class: 'qrcode',
-            },
-          ],
         },
       );
       tree.children.push({
