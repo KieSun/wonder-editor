@@ -13,6 +13,7 @@ export function linkToFootnotePlugin() {
 function transformer(tree: any) {
   let i = 1;
   const replace: Visitor<Node> = (node, index, parent) => {
+    if (!node.title) return;
     // @ts-ignore
     visit(node, 'text', (child) => {
       const identifier = i++;
@@ -64,11 +65,11 @@ function transformer(tree: any) {
             },
             {
               type: 'paragraph',
-              children: [{ type: 'text', value: '111123' }],
+              children: [{ type: 'text', value: child.value }],
             },
             {
               type: 'paragraph',
-              children: [{ type: 'text', value: '11112312323' }],
+              children: [{ type: 'text', value: node.url }],
             },
             {
               type: 'html',
