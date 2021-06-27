@@ -21,6 +21,8 @@ export function divToSectionPlugin() {
   };
 }
 
+let footnotes: any[] = [];
+
 function transformer(tree: any) {
   let i = 1;
   const replace: Visitor<Node> = (node, index, parent) => {
@@ -58,15 +60,10 @@ function transformer(tree: any) {
           value: `<div class='qrcode_wrapper qrcode_${identifier}'><div><p>${child.value}</p><p>${url}</p></div></div>`,
         },
       );
-      tree.children.push({
-        type: 'footnoteDefinition',
+      footnotes.push({
         identifier,
-        children: [
-          {
-            type: 'text',
-            value: `${child.value}：${url}`,
-          },
-        ],
+        text: child.value,
+        url,
       });
 
       setTimeout(async () => {
@@ -85,6 +82,29 @@ function transformer(tree: any) {
   };
   // @ts-ignore
   visit(tree, 'link', replace);
+  tree.children.push({
+    type: 'heading',
+    depth: 4,
+    children: [
+      {
+        type: 'text',
+        value: `引用链接`,
+      },
+    ],
+  });
+  footnotes.forEach(({ identifier, text, url }) => {
+    tree.children.push({
+      type: 'footnoteDefinition',
+      identifier,
+      children: [
+        {
+          type: 'text',
+          value: `${text}：${url}`,
+        },
+      ],
+    });
+  });
+  footnotes = [];
 }
 
 function handleHTML(tree: any) {
