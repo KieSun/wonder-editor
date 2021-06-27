@@ -7,7 +7,7 @@ export function linkToFootnotePlugin() {
     remark: (u: any) => {
       return u.use(() => transformer);
     },
-    rehype: (r) => {
+    rehype: (r: any) => {
       return r.use(() => handleHTML);
     },
   };
@@ -24,7 +24,8 @@ export function divToSectionPlugin() {
 function transformer(tree: any) {
   let i = 1;
   const replace: Visitor<Node> = (node, index, parent) => {
-    if (!node.title) return;
+    const url = node.url as string;
+    if (!url && !url.startsWith('http')) return;
     // @ts-ignore
     visit(node, 'text', (child) => {
       const identifier = i++;
@@ -54,7 +55,7 @@ function transformer(tree: any) {
         0,
         {
           type: 'html',
-          value: `<div class='qrcode_wrapper qrcode_${identifier}'><div><p>${child.value}</p><p>${node.url}</p></div></div>`,
+          value: `<div class='qrcode_wrapper qrcode_${identifier}'><div><p>${child.value}</p><p>${url}</p></div></div>`,
         },
       );
       tree.children.push({
@@ -63,7 +64,7 @@ function transformer(tree: any) {
         children: [
           {
             type: 'text',
-            value: `${child.value}：${node.url}`,
+            value: `${child.value}：${url}`,
           },
         ],
       });
@@ -72,7 +73,7 @@ function transformer(tree: any) {
         const wrapper = document.querySelector(`.qrcode_${identifier}`);
         if (wrapper) {
           const svgWrapper = document.createElement('section');
-          svgWrapper.innerHTML = await QRCode.toString(node.url as string, {
+          svgWrapper.innerHTML = await QRCode.toString(url, {
             color: {
               light: 'inherit',
             },

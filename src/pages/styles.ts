@@ -221,7 +221,7 @@ export const baseTheme = css`
   }
 
   .markdown-body p sup {
-    padding-left: 3px;
+    padding: 0 3px;
   }
 
   .markdown-body p code {
