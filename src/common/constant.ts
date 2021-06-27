@@ -10,4 +10,6 @@ export enum UploadType {
 
 export enum Notify {
   FormatDoc = 'FormatDoc',
+  LinkToHTML = 'LinkToHTML',
+  LinkToQRCode = 'LinkToQRCode',
 }

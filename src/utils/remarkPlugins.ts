@@ -1,10 +1,19 @@
 import visit, { Visitor } from 'unist-util-visit';
 import { Node, Parent } from 'unist';
 import QRCode from 'qrcode';
+import { PluginParams } from '@/types';
 
-export function linkToFootnotePlugin() {
+let toHTML: boolean, toQRCode: boolean;
+
+export function linkToFootnotePlugin({
+  linkToHTML,
+  linkToQRCode,
+}: PluginParams) {
   return {
     remark: (u: any) => {
+      toHTML = linkToHTML;
+      toQRCode = linkToQRCode;
+
       return u.use(() => transformer);
     },
     rehype: (r: any) => {
@@ -27,44 +36,48 @@ function transformer(tree: any) {
   let i = 1;
   const replace: Visitor<Node> = (node, index, parent) => {
     const url = node.url as string;
-    if (!url && !url.startsWith('http')) return;
+    if (!url.startsWith('http')) return;
     // @ts-ignore
     visit(node, 'text', (child) => {
       const identifier = i++;
-      node.text = identifier;
-      node.type = 'footnoteReference';
-      node.identifier = identifier;
-      parent?.children.splice(
-        index!,
-        0,
-        {
-          type: 'html',
-          value: '<span class="sup_label">',
-        },
-        {
-          type: 'text',
-          value: child.value,
-        },
-        {
-          type: 'html',
-          value: '</span>',
-        },
+      const parentIndex = tree.children.findIndex(
+        (item: Parent | undefined) => item === parent,
       );
+      if (parentIndex === -1) return;
 
-      tree.children.splice(
-        tree.children.findIndex((item: Parent | undefined) => item === parent) +
-          1,
-        0,
-        {
+      if (toHTML) {
+        node.text = identifier;
+        node.type = 'footnoteReference';
+        node.identifier = identifier;
+        parent?.children.splice(
+          index!,
+          0,
+          {
+            type: 'html',
+            value: '<span class="sup_label">',
+          },
+          {
+            type: 'text',
+            value: child.value,
+          },
+          {
+            type: 'html',
+            value: '</span>',
+          },
+        );
+        footnotes.push({
+          identifier,
+          text: child.value,
+          url,
+        });
+      }
+
+      if (toQRCode) {
+        tree.children.splice(parentIndex + 1, 0, {
           type: 'html',
           value: `<div class='qrcode_wrapper qrcode_${identifier}'><div><p>${child.value}</p><p>${url}</p></div></div>`,
-        },
-      );
-      footnotes.push({
-        identifier,
-        text: child.value,
-        url,
-      });
+        });
+      }
 
       setTimeout(async () => {
         const wrapper = document.querySelector(`.qrcode_${identifier}`);
@@ -82,29 +95,31 @@ function transformer(tree: any) {
   };
   // @ts-ignore
   visit(tree, 'link', replace);
-  tree.children.push({
-    type: 'heading',
-    depth: 4,
-    children: [
-      {
-        type: 'text',
-        value: `引用链接`,
-      },
-    ],
-  });
-  footnotes.forEach(({ identifier, text, url }) => {
+  if (footnotes.length > 0) {
     tree.children.push({
-      type: 'footnoteDefinition',
-      identifier,
+      type: 'heading',
+      depth: 4,
       children: [
         {
           type: 'text',
-          value: `${text}：${url}`,
+          value: `引用链接`,
         },
       ],
     });
-  });
-  footnotes = [];
+    footnotes.forEach(({ identifier, text, url }) => {
+      tree.children.push({
+        type: 'footnoteDefinition',
+        identifier,
+        children: [
+          {
+            type: 'text',
+            value: `${text}：${url}`,
+          },
+        ],
+      });
+    });
+    footnotes = [];
+  }
 }
 
 function handleHTML(tree: any) {

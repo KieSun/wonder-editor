@@ -50,6 +50,10 @@ export default (props: IEditorProps) => {
   const [value, setValue] = useState('');
   const [editor, setEditor] = useState<CodeMirror.Editor>();
   const [menuInfo, setMenuInfo] = useState<IMenuInfo>({ show: false });
+  const [pluginParams, setPluginParams] = useState({
+    linkToHTML: true,
+    linkToQRCode: false,
+  });
 
   const handleChange = useCallback((value: string) => {
     setValue(value);
@@ -122,6 +126,25 @@ export default (props: IEditorProps) => {
   }, []);
 
   useEventbus(Notify.FormatDoc, handleFormatter, [handleFormatter]);
+  useEventbus(
+    Notify.LinkToQRCode,
+    (checked: boolean) =>
+      setPluginParams((params) => ({
+        ...params,
+        linkToQRCode: !params.linkToQRCode,
+      })),
+    [],
+  );
+  useEventbus(
+    Notify.LinkToHTML,
+    (checked: boolean) => {
+      return setPluginParams((params) => ({
+        ...params,
+        linkToHTML: !params.linkToHTML,
+      }));
+    },
+    [],
+  );
 
   return (
     <>
@@ -132,7 +155,7 @@ export default (props: IEditorProps) => {
         plugins={[
           gfm(),
           highlight(),
-          linkToFootnotePlugin(),
+          linkToFootnotePlugin({ ...pluginParams }),
           divToSectionPlugin(),
           footnotes(),
         ]}

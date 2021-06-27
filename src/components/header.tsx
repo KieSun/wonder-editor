@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Col, Divider, Dropdown, Menu, Row, message } from 'antd';
+import { Button, Col, Divider, Dropdown, Menu, Row, Switch } from 'antd';
 import { emit } from 'react-wonder-hooks';
 import { StyledHeader } from '@/components/header.styles';
 import UploadConfigForm from './uploadConfigForm';
@@ -19,13 +19,28 @@ export default () => {
 
   return (
     <StyledHeader>
-      <Row align="middle">
+      <Row align="middle" justify="center">
         <Col>
           <Dropdown overlay={menu}>
             <Button type="text" size="large">
               功能
             </Button>
           </Dropdown>
+        </Col>
+        <Col style={{ paddingRight: '15px' }}>
+          <Switch
+            checkedChildren="链接转脚注"
+            unCheckedChildren="关闭链接转脚注"
+            defaultChecked
+            onChange={(checked) => emit(Notify.LinkToHTML, checked)}
+          />
+        </Col>
+        <Col>
+          <Switch
+            checkedChildren="链接转二维码"
+            unCheckedChildren="关闭链接转二维码"
+            onChange={(checked) => emit(Notify.LinkToQRCode, checked)}
+          />
         </Col>
       </Row>
       <Divider />
