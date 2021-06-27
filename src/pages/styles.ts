@@ -237,6 +237,50 @@ export const baseTheme = css`
     border-radius: 4px;
     font-size: 12px;
   }
+
+  .markdown-body pre .hljs {
+    background-color: inherit;
+    font-size: inherit;
+  }
+
+  .markdown-body .footnotes {
+    font-size: 12px;
+  }
+
+  .markdown-body .footnotes hr:first-child,
+  .markdown-body .footnotes li p {
+    display: none;
+  }
+
+  .markdown-body .qrcode_wrapper {
+    margin: 0.8em 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 10px;
+    background-color: #f7f7f7;
+    border-radius: 4px;
+  }
+  .markdown-body .qrcode_wrapper > section:first-child {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+  }
+  .markdown-body .qrcode_wrapper > section:last-child {
+    width: 80px;
+    height: 80px;
+  }
+  .markdown-body .qrcode_wrapper > section:first-child p {
+    margin: 0;
+    font-size: 12px;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .markdown-body .qrcode_wrapper > section:first-child p:first-child {
+    margin-bottom: 10px;
+  }
 `;
 
 export const StyledMainWrapper = styled.main`
@@ -259,52 +303,7 @@ export const StyledMainWrapper = styled.main`
       ${baseTheme}
 
       .markdown-body {
-        pre {
-          .hljs {
-            background-color: inherit;
-            font-size: inherit;
-          }
-        }
-
-        .qrcode_wrapper {
-          margin: 0.8em 0;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 4px 10px;
-          background-color: #f7f7f7;
-          border-radius: 4px;
-
-          & > div:first-child {
-            display: flex;
-            flex-direction: column;
-            width: 70%;
-
-            & > p {
-              margin: 0;
-              font-size: 12px;
-              width: 100%;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-            }
-          }
-
-          & > div:last-child {
-            width: 80px;
-            height: 80px;
-          }
-        }
-
-        .footnotes {
-          & > hr:first-child {
-            display: none;
-          }
-
-          li p {
-            display: inline-block;
-          }
-        }
+        padding: 16px 8%;
       }
     }
   }

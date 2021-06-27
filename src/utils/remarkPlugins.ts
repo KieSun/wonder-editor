@@ -7,6 +7,17 @@ export function linkToFootnotePlugin() {
     remark: (u: any) => {
       return u.use(() => transformer);
     },
+    rehype: (r) => {
+      return r.use(() => handleHTML);
+    },
+  };
+}
+
+export function divToSectionPlugin() {
+  return {
+    rehype: (u: any) => {
+      return u.use(() => handleHTML);
+    },
   };
 }
 
@@ -36,46 +47,14 @@ function transformer(tree: any) {
           value: '</span>',
         },
       );
-      const id = `qrcode_${identifier}`;
-      setTimeout(async () => {
-        const wrapper = document.querySelector(
-          `#user-content-${id}`,
-        )?.parentElement;
-        if (wrapper) {
-          wrapper.setAttribute('class', 'qrcode_wrapper');
-          const svgWrapper = document.createElement('div');
-          svgWrapper.innerHTML = await QRCode.toString(node.url as string, {
-            color: {
-              light: 'inherit',
-            },
-          });
-          wrapper.append(svgWrapper);
-        }
-      });
+
       tree.children.splice(
         tree.children.findIndex((item: Parent | undefined) => item === parent) +
           1,
         0,
         {
-          type: 'element',
-          children: [
-            {
-              type: 'html',
-              value: `<div id="${id}">`,
-            },
-            {
-              type: 'paragraph',
-              children: [{ type: 'text', value: child.value }],
-            },
-            {
-              type: 'paragraph',
-              children: [{ type: 'text', value: node.url }],
-            },
-            {
-              type: 'html',
-              value: '</div>',
-            },
-          ],
+          type: 'html',
+          value: `<div class='qrcode_wrapper qrcode_${identifier}'><div><p>${child.value}</p><p>${node.url}</p></div></div>`,
         },
       );
       tree.children.push({
@@ -88,8 +67,29 @@ function transformer(tree: any) {
           },
         ],
       });
+
+      setTimeout(async () => {
+        const wrapper = document.querySelector(`.qrcode_${identifier}`);
+        if (wrapper) {
+          const svgWrapper = document.createElement('section');
+          svgWrapper.innerHTML = await QRCode.toString(node.url as string, {
+            color: {
+              light: 'inherit',
+            },
+          });
+          wrapper.append(svgWrapper);
+        }
+      });
     });
   };
   // @ts-ignore
   visit(tree, 'link', replace);
+}
+
+function handleHTML(tree: any) {
+  visit(tree, 'element', (node) => {
+    if (node.tagName === 'div') {
+      node.tagName = 'section';
+    }
+  });
 }

@@ -11,10 +11,14 @@ import keydown from '@/common/keyCode';
 import upload from '@/utils/upload';
 import { formatMarkdown } from '@/utils/format';
 import { Notify } from '@/common/constant';
-import { linkToFootnotePlugin } from '@/utils/remarkPlugins';
+import {
+  linkToFootnotePlugin,
+  divToSectionPlugin,
+} from '@/utils/remarkPlugins';
 import gfm from '@bytemd/plugin-gfm';
 import highlight from '@bytemd/plugin-highlight';
 import 'highlight.js/styles/vs.css';
+import RightSide from './rightSide';
 
 interface IEditorProps {
   handleEditorChange: (value: string) => void;
@@ -125,10 +129,17 @@ export default (props: IEditorProps) => {
         mode="split"
         value={value}
         locale={zhHans}
-        plugins={[gfm(), highlight(), linkToFootnotePlugin(), footnotes()]}
+        plugins={[
+          gfm(),
+          highlight(),
+          linkToFootnotePlugin(),
+          divToSectionPlugin(),
+          footnotes(),
+        ]}
         uploadImages={handleUploadImages}
         onChange={handleChange}
       />
+      <RightSide />
       {menuInfo.show ? (
         <StyledMenuWrapper left={menuInfo.x!} top={menuInfo.y!}>
           <Menu>
